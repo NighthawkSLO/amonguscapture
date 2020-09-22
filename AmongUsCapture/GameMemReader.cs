@@ -81,7 +81,7 @@ namespace AmongUsCapture
                 }
 
                 GameState state;
-                int meetingHudState = ProcessMemory.ReadWithDefault<int>(GameAssemblyPtr, 4, 0xDA58D0, 0x5C, 0, 0x84); // 0 = Discussion, 1 = NotVoted, 2 = Voted, 3 = Results, 4 = Proceeding
+                int isInMeeting = ProcessMemory.Read<int>(GameAssemblyPtr, 0xDA58D0, 0x5C, 0, 0x08); // MeetingHud.m_CachedPtr
                 int gameState = ProcessMemory.Read<int>(GameAssemblyPtr, 0xDA5ACC, 0x5C, 0, 0x64); // 0 = NotJoined, 1 = Joined, 2 = Started, 3 = Ended (during "defeat" or "victory" screen only)
 
                 if (gameState == 0)
@@ -98,7 +98,7 @@ namespace AmongUsCapture
                 {
                     state = GameState.LOBBY;
                 }
-                else if (meetingHudState < 4)
+                else if (isInMeeting != 0)
                 {
                     state = GameState.DISCUSSION;
                 } else
